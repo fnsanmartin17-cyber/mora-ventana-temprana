@@ -131,11 +131,10 @@ def cargar():
     print("  %s filas (una por cuota)" % f"{len(df):,}")
     print("  %s creditos de %s clientes distintos"
           % (f"{n_cred:,}", f"{df['a_rutcliente'].nunique():,}"))
+    # Ojo con este porcentaje: la mora es la clase MAYORITARIA, no la rara. El
+    # desbalance esta invertido respecto de lo habitual en riesgo de credito, y
+    # eso cambia como hay que leer todas las metricas de aca en adelante.
     print("  %.1f%% terminaron en mora" % (mora.mean() * 100))
-    print()
-    print("  Ojo con esto: la mora es la clase MAYORITARIA, no la rara. El")
-    print("  desbalance esta invertido respecto de lo habitual en riesgo de")
-    print("  credito, y eso cambia como hay que leer todas las metricas.")
     return df
 
 
@@ -189,6 +188,13 @@ def marcar_observadas(df):
 # Descarte tres columnas a proposito: a_modelo tiene 617 niveles distintos y solo
 # agrega ruido, a_fechaalta venia completamente vacia, y a_tipocliente es la
 # misma palabra en todas las filas.
+#
+# Y hay otras que NO uso aunque vengan en el archivo, por una razon de fondo:
+# cuotas_pagadas, cuotas_vencidas_np, cuotas_futuras_np, cuotas_pagadas_con_atraso,
+# max_dias_atraso, tiene_atraso y estado_pago_credito resumen TODO el historial del
+# credito, incluido lo que ocurre DESPUES de la ventana. Meterlas seria filtrar la
+# respuesta: estado_pago_credito es literalmente la variable objetivo, y
+# cuotas_pagadas la determina (si igualan a total_cuotas, el credito no esta en mora).
 EXO_NUM = ["n_pie", "pct_pie", "n_plazo", "n_tasamensual",
            "n_precio", "n_totalfinanciar", "ltv", "valor_cuota_aprox"]
 EXO_CAT = ["a_marca", "a_nombreproducto", "a_tipocredito", "a_seguro"]
@@ -212,10 +218,6 @@ def exogenas_y_target(df):
     print("  %d variables exogenas a nivel credito" % (len(EXO_NUM) + len(EXO_CAT)))
     print("  Clase positiva = mora (1). Reparto: %d en mora, %d pagados"
           % (int(target["mora"].sum()), int((target["mora"] == 0).sum())))
-    print()
-    print("  NO uso cuotas_pagadas, max_dias_atraso ni estado_pago_credito,")
-    print("  aunque vengan en el archivo: resumen TODO el historial del credito,")
-    print("  incluido lo que pasa despues de la ventana, y filtran la respuesta.")
     return exo, target
 
 
