@@ -54,15 +54,17 @@ quinta cuota que mirar:
 | Ventana k = 5 | 1.699 | 76,4 % |
 | Ventana k = 10 | 925 | 56,8 % |
 
-**2. Por eso el F1 absoluto engaña.** Un clasificador que responde «mora» siempre, sin mirar
-un solo dato, obtiene sobre una proporción `p` de clase mayoritaria:
+**2. Por eso el F1 absoluto engaña.** Pensemos en un clasificador que responde «mora» a
+todos los créditos, sin mirar un solo dato. En la ventana k = 1 hay 2.188 créditos y 1.787
+terminaron en mora, así que acierta 1.787 y falla 401: **un 81,7 % de aciertos y un F1 de
+0,899, sin haber predicho nada**.
 
-```
-Accuracy = p     Recall = 1     Precision = p     F1 = 2p / (1 + p)
-```
+Ese es el piso. Un modelo con F1 de 0,90 en esa ventana no está prediciendo: está
+empatando con no hacer nada. Y como el piso depende de cuánta mora haya en cada cohorte,
+cambia con la ventana: va de 0,899 en k = 1 a 0,724 en k = 10.
 
-Con p = 81,7 % eso da **F1 = 0,899 sin predecir nada**. Cualquier F1 tiene que leerse contra
-ese piso. Por eso todas las tablas de aquí abajo incluyen la fila del clasificador trivial.
+Por eso todas las tablas de aquí abajo incluyen la fila del clasificador trivial: un F1
+solo significa algo leído contra su propio piso.
 
 ---
 
