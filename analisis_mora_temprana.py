@@ -224,12 +224,12 @@ def exogenas_y_target(df):
 # =============================================================================
 #  PASO 4 - Las variables de comportamiento, sin espiar el futuro
 # =============================================================================
-# Aca esta lo que mas me costo resolver bien.
+# 
 #
 # El problema: si miro las primeras 5 cuotas de un credito, no puedo usar
 # informacion que en ese momento todavia no existia. Un credito que se puso al
 # dia en la cuota 20 no puede aparecer como "pago la cuota 3" si ese pago
-# ocurrio dos anios despues.
+# ocurrio dos años despues.
 #
 # La solucion: para cada credito fijo un punto de observacion propio, que es el
 # vencimiento de la ultima cuota de su ventana. Y desde ahi:
@@ -242,7 +242,7 @@ def exogenas_y_target(df):
 # Con eso armo once variables de comportamiento, todas con prefijo w_.
 def racha_maxima(seq):
     """La racha mas larga de unos seguidos. Sirve para medir si los atrasos
-    vienen encadenados (mala senial) o sueltos."""
+    vienen encadenados (mala señal) o sueltos."""
     mejor = actual = 0
     for v in seq:
         actual = actual + 1 if v else 0
@@ -477,7 +477,7 @@ def evaluar_modelo(modelo, ds):
 
 
 # =============================================================================
-#  PASO 7 - CNN y LSTM (opcional, necesita PyTorch)
+#  PASO 7 - CNN y LSTM
 # =============================================================================
 # Los cuatro modelos anteriores reciben un vector de resumen por credito. Estas
 # dos redes reciben otra cosa: la SECUENCIA cuota a cuota, con tres valores por
