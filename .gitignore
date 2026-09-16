@@ -1,6 +1,5 @@
 # Salidas que genera el script al correr
 resultados/
-*.png
 
 # Datos confidenciales: la base real NUNCA debe subirse aca.
 # Contiene RUT de personas naturales e informacion comercial reservada.

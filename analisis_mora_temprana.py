@@ -19,9 +19,9 @@
  ------------------------
  Todo. Carga los datos, arma las variables, entrena los seis modelos, calcula el
  clasificador trivial de referencia y escribe las tablas de los cuatro objetivos
- /.
+ en la carpeta resultados/.
 
-     pip install pandas numpy scikit-learn xgboost matplotlib
+     pip install pandas numpy scikit-learn xgboost
      python analisis_mora_temprana.py
 
 
