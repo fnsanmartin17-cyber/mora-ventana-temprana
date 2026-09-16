@@ -24,8 +24,6 @@
      pip install pandas numpy scikit-learn xgboost matplotlib
      python analisis_mora_temprana.py
 
- Tarda entre 15 y 40 minutos segun la maquina. Si ademas tenes PyTorch
- instalado corre la CNN y la LSTM; si no, las salta y avisa.
 
  LOS DATOS
  ---------
