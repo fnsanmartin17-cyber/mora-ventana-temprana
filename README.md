@@ -170,9 +170,6 @@ Sobre los **datos reales**, la revisión mostró:
   meses siguientes a la ventana) hay muestra hasta k = 5: 464 créditos, 11,2 % de
   incumplimiento. Ahí el ROC-AUC queda entre 0,77 y 0,82; en k = 1 está cerca del azar.
 
-Por eso los resultados de la sección anterior deben leerse como predicción del estado de pago
-a la fecha de corte, no como predicción del incumplimiento.
-
 ---
 
 ## Cómo está construido el análisis
