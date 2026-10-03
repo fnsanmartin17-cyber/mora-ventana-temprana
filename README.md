@@ -7,12 +7,14 @@ Felipe San Martín · Magíster en Data Science, Universidad San Sebastián (Chi
 
 ---
 
-## El repositorio son dos archivos
+## Qué hay en el repositorio
 
 | Archivo | Qué es |
 |---|---|
 | **[`analisis_mora_temprana.py`](analisis_mora_temprana.py)** | Todo el análisis en un solo script, explicado paso a paso |
 | **[`datos_sinteticos.csv`](datos_sinteticos.csv)** | La base con la que se puede ejecutar (79.141 filas) |
+| **[`corrida_revision.py`](corrida_revision.py)** | Revisión metodológica: reutiliza las funciones del análisis principal para diagnosticar la variable objetivo y repetir los modelos con un objetivo de incumplimiento estándar (ver [Revisión metodológica](#revisión-metodológica)) |
+| **[`conteos_m1.py`](conteos_m1.py)** | Dos conteos descriptivos de la revisión, sin entrenar modelos: atraso de la clase en mora a la fecha de corte y pagos registrados justo antes del corte |
 
 ```bash
 pip install pandas numpy scikit-learn xgboost
@@ -137,6 +139,39 @@ porque la cohorte no cambia:
 
 **Sobre población fija, pasar de 1 a 10 cuotas observadas vale +0,188 de F1, no +0,041.** La
 diferencia entre esas dos cifras es, en una línea, la conclusión del trabajo.
+
+---
+
+## Revisión metodológica
+
+Dos scripts adicionales revisan qué mide realmente la variable objetivo. No modifican el
+análisis principal: lo importan y reutilizan sus funciones, así que deben estar en la misma
+carpeta que `analisis_mora_temprana.py`.
+
+```bash
+BLOQUES=0 python corrida_revision.py   # diagnóstico, segundos
+python corrida_revision.py             # corrida completa, 1 a 4 horas
+python conteos_m1.py                   # conteos descriptivos, segundos
+```
+
+`corrida_revision.py` acepta `REPS=3` (menos repeticiones) o `SIN_REDES=1` (sin CNN ni LSTM)
+para acortar la corrida. Ambos scripts escriben en `resultados_revision/`; los archivos
+`privado_*` contienen predicciones por crédito y no deben compartirse.
+
+Sobre los **datos reales**, la revisión mostró:
+
+- **`mora` es el estado de pago a la fecha de corte (8 de mayo de 2026), no el desenlace
+  final.** 2.138 de los 2.188 créditos aún no terminaban su plazo. La mediana de atraso de la
+  clase en mora es de 3 días, y solo el 14,1 % supera los 90.
+- **El prepago separa casi por completo a los pagados.** El −60 aparece en 368 de los 401
+  créditos pagados, y en k = 10, 339 de los 400 pagados ya estaban liquidados en el punto de
+  observación.
+- **Con un objetivo de incumplimiento estándar** (90 o más días de atraso dentro de los 6
+  meses siguientes a la ventana) hay muestra hasta k = 5: 464 créditos, 11,2 % de
+  incumplimiento. Ahí el ROC-AUC queda entre 0,77 y 0,82; en k = 1 está cerca del azar.
+
+Por eso los resultados de la sección anterior deben leerse como predicción del estado de pago
+a la fecha de corte, no como predicción del incumplimiento.
 
 ---
 
